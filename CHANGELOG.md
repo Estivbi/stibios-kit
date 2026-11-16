@@ -14,7 +14,7 @@ Primera versión pública.
 - Módulos opcionales `ui`, `seguridad` y `devops`: `base.md` se genera desde el núcleo y los módulos activos, y solo se instalan sus agentes, plantillas y MCP.
 - `scripts/doctor.sh`: comprueba configuración, archivos, imports, placeholders, `base.md` al día, `.mcp.json`, backlog y versión.
 - Backlog de tickets en `docs/backlog/` con `/ticket` y `/exportar`: exportación a Jira (MCP de Atlassian), GitHub (`gh`) y Linear (MCP), o CSV importable, siempre con vista previa y aprobación.
-- Licencia MIT, tests con `bats` (60), `shellcheck` y CI en GitHub Actions (Linux, macOS y bash 3.2).
+- Licencia MIT, tests con `bats` (61), `shellcheck` y CI en GitHub Actions (Linux, macOS y bash 3.2).
 - Documentos de comunidad: `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, plantillas de issues y de PR.
 
 ### Cambiado

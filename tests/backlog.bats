@@ -98,6 +98,15 @@ setup() { setup_proyecto; instalar --modulos "" >/dev/null; }
   [[ "$output" != *"titulo:"* ]]
 }
 
+@test "csv escapa las comillas dobles de la descripcion duplicandolas" {
+  backlog nuevo "A" >/dev/null
+  completar_ticket TCK-1
+  printf 'Dijo "hola" y se fue.\n' >> "$PROY/docs/backlog/TCK-1.md"
+  run backlog csv jira
+  [ "$status" -eq 0 ]
+  [[ "$output" == *'Dijo ""hola"" y se fue.'* ]]
+}
+
 @test "csv: sin tickets listos falla; destino desconocido falla; linear tiene su cabecera" {
   backlog nuevo "A" >/dev/null
   run backlog csv jira
