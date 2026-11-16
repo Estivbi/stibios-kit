@@ -38,6 +38,7 @@ Tipado estricto, linter y formateador del stack, sin código muerto, funciones p
 ## Documentación
 
 - El repositorio es la fuente de verdad y sirve como material de enseñanza para replicar la estrategia.
+- `docs/backlog/`: tickets por hacer (`<ID>.md` con front-matter y criterios dado / cuando / entonces), listos para exportar al tracker.
 - `docs/specs/`: qué se construye y cómo se sabrá que está bien.
 - `docs/tickets/`: qué se construyó, paso a paso, cómo replicarlo y qué se aprendió. Se escribe en cada ticket, antes de la PR.
 - `docs/adr/NNNN-<titulo>.md`: una decisión por archivo (contexto, opciones, decisión, consecuencias). Inmutables: si cambia, un ADR nuevo sustituye al anterior.

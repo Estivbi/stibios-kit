@@ -5,4 +5,4 @@ argument-hint: <TICKET>
 
 A partir de `docs/specs/$1.md` y del plan, genera una lista de tareas pequeñas y ordenadas. Cada tarea indica: agente responsable, criterio de la spec que cubre, el test que se escribe primero y el commit esperado (`test(...)` y luego `feat(...)`).
 
-Presenta la lista y espera confirmación antes de empezar.
+Presenta la lista y espera confirmación. Tras confirmarla, guárdala como checklist en `docs/specs/$1-tareas.md` (`- [ ] T1 ...`) para no perderla. Si más adelante quieren subtareas en el tracker, se crean desde esa lista con `/ticket`.
