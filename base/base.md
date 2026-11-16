@@ -1,6 +1,6 @@
 # Base Stibios — Forma de trabajar común a todos los proyectos
 
-Este archivo lo copia `stibios-kit` a `.claude/stibios/base.md` de cada proyecto. No lo edites dentro del proyecto: los cambios se hacen en el repo `stibios-kit` y se propagan con `sync.sh`. Lo específico del proyecto (stack, estructura, tickets) va en `AGENTS.md`. Si algo del `AGENTS.md` del proyecto choca con este archivo, manda el del proyecto.
+Este archivo lo copia `stibios-kit` a `.claude/stibios/base.md` de cada proyecto. No lo edites dentro del proyecto: los cambios se hacen en el repo `stibios-kit` y se propagan con `scripts/sync-all.sh`. Lo específico del proyecto (stack, estructura, tickets) va en `AGENTS.md`. Si algo del `AGENTS.md` del proyecto choca con este archivo, manda el del proyecto.
 
 ## Flujo SDD y TDD
 
@@ -38,9 +38,9 @@ Un ticket está hecho cuando: cada criterio de la spec tiene test y pasa, el lin
 
 ## Ramas, commits y PRs
 
-- Una rama por ticket, desde `main`, con nombre en español que explique lo que hace: `kan-33/configurar-subagentes`.
+- Una rama por ticket, desde `main`, con nombre en español que explique lo que hace: `tck-123/configurar-subagentes` (el prefijo es el del tracker del proyecto).
 - `main` es la rama por defecto y está protegida. Las ramas van contra `main`.
-- Las PRs las crea y las mergea Carol. Al terminar un ticket, el agente deja la URL de comparación de GitHub, el título y la descripción para pegar. No se empieza el siguiente ticket hasta que el anterior está mergeado.
+- Las PRs las crea y las mergea la persona responsable del proyecto. Al terminar un ticket, el agente deja la URL de comparación de GitHub, el título y la descripción para pegar. No se empieza el siguiente ticket hasta que el anterior está mergeado.
 - Conventional Commits con descripción en español, en infinitivo: `tipo(<TICKET>): descripción` con `feat`, `fix`, `test`, `docs`, `refactor`, `chore`, `ci`, `build`.
 - Sin firmas ni atribuciones en commits, PRs ni archivos. El autor es la identidad Git configurada en el repo.
 - Nunca se reescribe el historial de una rama compartida (sin rebase, amend ni push --force).

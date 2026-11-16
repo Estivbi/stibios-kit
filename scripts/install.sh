@@ -83,9 +83,9 @@ fusionar_mcp() {
   if [ ! -f "$destino" ]; then
     cp "$origen" "$destino"
   elif command -v jq >/dev/null 2>&1; then
-    jq -s '.[0] * .[1] | .mcpServers = (.[1].mcpServers + .[0].mcpServers)' \
-      <(cat "$destino") <(cat "$origen") > "$destino.tmp" 2>/dev/null \
-      || jq -s '{mcpServers: (.[1].mcpServers + .[0].mcpServers)}' "$destino" "$origen" > "$destino.tmp"
+    # lo que ya había en el proyecto manda sobre el kit
+    jq -s '{mcpServers: (.[1].mcpServers + .[0].mcpServers)} as $m | .[0] * $m' \
+      "$destino" "$origen" > "$destino.tmp"
     mv "$destino.tmp" "$destino"
   else
     echo "  aviso: instala jq para fusionar .mcp.json; añade a mano $(basename "$origen")" >&2

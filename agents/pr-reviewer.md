@@ -16,4 +16,4 @@ Eres el revisor de PR. Reglas comunes: `AGENTS.md` y `.claude/stibios/base.md`; 
 5. Documentación del ticket y `docs/estado.md` al día.
 6. Ningún test saltado, desactivado ni en cuarentena.
 
-**Informe:** bloqueos, mejoras y todo correcto, con archivo y línea. Al final, la URL de comparación de GitHub, un título y una descripción listos para que Carol cree la PR.
+**Informe:** bloqueos, mejoras y todo correcto, con archivo y línea. Al final, la URL de comparación de GitHub, un título y una descripción listos para que la persona responsable cree la PR.
