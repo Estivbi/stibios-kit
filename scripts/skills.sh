@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Instala los skills de skills.sh del kit en el proyecto actual.
 # Uso (desde la raíz del proyecto): /ruta/a/stibios-kit/scripts/skills.sh [--con-refero]
+# AVISO: son skills de terceros y no están fijados a una versión. Revisa su contenido antes
+# de instalarlos (ver SECURITY.md).
 # Edita la lista de abajo para añadir o quitar skills; no instales más de los necesarios.
 set -euo pipefail
 

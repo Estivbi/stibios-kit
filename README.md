@@ -1,5 +1,7 @@
 # stibios-kit
 
+[![CI](https://github.com/Estivbi/stibios-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/Estivbi/stibios-kit/actions/workflows/ci.yml) [![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
+
 Base común para tus proyectos con Claude Code: flujo SDD/TDD, agentes, comandos, MCP y skills de diseño. Se instala en proyectos nuevos y se sincroniza en los existentes.
 
 ## Contenido
@@ -22,7 +24,7 @@ Base común para tus proyectos con Claude Code: flujo SDD/TDD, agentes, comandos
 ## Instalación del kit
 
 ```bash
-git clone https://github.com/estivbi/stibios-kit.git
+git clone --branch v0.1.0 https://github.com/Estivbi/stibios-kit.git   # versión fija; sin --branch, la última
 export STIBIOS_KIT="$PWD/stibios-kit"   # añádelo a tu shell para reutilizarlo
 ```
 
@@ -112,6 +114,22 @@ No pisa `AGENTS.md`, `CLAUDE.md` ni `DESIGN.md`. Añade los imports que falten a
 - Sin secretos en este repo.
 - Los agentes del kit son genéricos; si un proyecto necesita uno distinto, se edita en el proyecto y `install.sh` ya no lo pisa (salvo `--force-agents`).
 - Las dependencias externas (MCP, skills) se fijan a una versión concreta cuando es posible.
+
+## Versiones
+
+El kit sigue [SemVer](https://semver.org/lang/es/) y cada versión es un tag (`vX.Y.Z`); los cambios están en el [CHANGELOG](CHANGELOG.md). Cada proyecto guarda la versión instalada en `.claude/stibios/.kit-version` y `doctor.sh` avisa si difiere de la del kit.
+
+## Desarrollo
+
+Detalles en [CONTRIBUTING.md](CONTRIBUTING.md).
+
+```bash
+npm install -g bats@1.13.0
+shellcheck -x -P SCRIPTDIR scripts/*.sh
+bats tests
+```
+
+La seguridad se reporta en privado (ver [SECURITY.md](SECURITY.md)). Este proyecto sigue un [código de conducta](CODE_OF_CONDUCT.md).
 
 ## Licencia
 

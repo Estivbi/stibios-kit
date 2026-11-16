@@ -9,6 +9,7 @@
 #   salvo con --force-agents. Solo los del núcleo y de los módulos activos.
 # - AGENTS.md, CLAUDE.md, DESIGN.md: nunca se sobrescriben si ya existen.
 # - .mcp.json: se fusiona sin pisar lo que ya hubiera (Playwright con `ui`; Jira/Linear según `tracker`).
+# - STIBIOS_REGISTRO=<archivo> cambia dónde se registran los proyectos (por defecto, projects.txt del kit).
 # - .claude/stibios/backlog.sh y ticket.md: herramientas del backlog, gestionadas por el kit.
 set -euo pipefail
 
@@ -149,14 +150,11 @@ case "$CFG_TRACKER" in
 esac
 
 # 5. Versión instalada
-VERSION="sin-git"
-if git -C "$KIT_DIR" rev-parse --short HEAD >/dev/null 2>&1; then
-  VERSION="$(git -C "$KIT_DIR" rev-parse --short HEAD)"
-fi
+VERSION="$(version_kit "$KIT_DIR")"
 printf '%s\n' "$VERSION" > "$DEST/.claude/stibios/.kit-version"
 
 # 6. Registro de proyectos (para sync-all.sh)
-REGISTRO="$KIT_DIR/projects.txt"
+REGISTRO="${STIBIOS_REGISTRO:-$KIT_DIR/projects.txt}"
 touch "$REGISTRO"
 grep -qxF "$DEST" "$REGISTRO" || printf '%s\n' "$DEST" >> "$REGISTRO"
 

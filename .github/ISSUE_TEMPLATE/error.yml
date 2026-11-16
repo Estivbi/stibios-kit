@@ -1,0 +1,31 @@
+name: Error
+description: Algo del kit no funciona como dice la documentación
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Versión del kit
+      description: "Contenido de .claude/stibios/.kit-version en tu proyecto"
+    validations:
+      required: true
+  - type: dropdown
+    id: sistema
+    attributes:
+      label: Sistema
+      options: [macOS, Linux, Windows (WSL)]
+    validations:
+      required: true
+  - type: textarea
+    id: que
+    attributes:
+      label: Qué ha pasado y qué esperabas
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducirlo
+      description: Comandos exactos y la salida de `scripts/doctor.sh <proyecto>`. No pegues secretos ni tokens.
+    validations:
+      required: true
