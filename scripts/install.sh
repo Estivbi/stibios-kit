@@ -8,7 +8,8 @@
 # - agentes: solo se copian los que faltan (el proyecto puede personalizarlos),
 #   salvo con --force-agents. Solo los del núcleo y de los módulos activos.
 # - AGENTS.md, CLAUDE.md, DESIGN.md: nunca se sobrescriben si ya existen.
-# - .mcp.json: se fusiona sin pisar lo que ya hubiera.
+# - .mcp.json: se fusiona sin pisar lo que ya hubiera (Playwright con `ui`; Jira/Linear según `tracker`).
+# - .claude/stibios/backlog.sh y ticket.md: herramientas del backlog, gestionadas por el kit.
 set -euo pipefail
 
 KIT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -73,6 +74,9 @@ componer_base "$KIT_DIR" > "$DEST/.claude/stibios/base.md"
 for f in "$KIT_DIR"/commands/*.md; do
   cp "$f" "$DEST/.claude/commands/$(basename "$f")"
 done
+# herramientas del backlog (las usan /ticket y /exportar sin necesitar el kit)
+cp "$KIT_DIR/scripts/backlog.sh" "$KIT_DIR/scripts/lib.sh" "$KIT_DIR/templates/ticket.md" "$DEST/.claude/stibios/"
+chmod +x "$DEST/.claude/stibios/backlog.sh"
 
 # 2. Agentes del núcleo y de los módulos activos (solo los que faltan)
 AGENTES="$AGENTES_NUCLEO"
@@ -137,6 +141,12 @@ if modulo_activo ui; then
 elif [ "$CON_REFERO" -eq 1 ]; then
   echo "  aviso: --con-refero necesita el módulo ui; actívalo en stibios.config.yml" >&2
 fi
+
+# MCP del tracker (Jira / Linear); GitHub usa la CLI `gh`
+case "$CFG_TRACKER" in
+  jira) fusionar_mcp "$KIT_DIR/mcp/jira.mcp.json" ;;
+  linear) fusionar_mcp "$KIT_DIR/mcp/linear.mcp.json" ;;
+esac
 
 # 5. Versión instalada
 VERSION="sin-git"

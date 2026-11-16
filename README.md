@@ -8,10 +8,10 @@ Base común para tus proyectos con Claude Code: flujo SDD/TDD, agentes, comandos
 |---|---|---|
 | `base/` | `core.md` (SDD/TDD, ramas, commits, seguridad) y `modulos/` (`ui`, `seguridad`, `devops`) | Se **genera** `.claude/stibios/base.md` según la configuración; se regenera en cada sync |
 | `agents/` | Agentes genéricos. Núcleo: arquitecto, backend, documentacion, pr-reviewer. Por módulo: frontend (`ui`), seguridad, devops | Solo se copian los que faltan y los de módulos activos |
-| `commands/` | `/spec`, `/plan`, `/tasks`, `/test` | Se sobrescriben en cada sync |
+| `commands/` | `/ticket`, `/exportar`, `/spec`, `/plan`, `/tasks`, `/test` | Se sobrescriben en cada sync |
 | `templates/` | `stibios.config.yml`, `AGENTS.md`, `CLAUDE.md`, `DESIGN.md` (solo con `ui`) | Solo si no existen |
-| `mcp/` | `ui.mcp.json` (Playwright, módulo `ui`) y `refero.mcp.json` (opcional, plan Pro) | Se fusiona con `.mcp.json` sin pisar |
-| `scripts/` | `install.sh`, `sync-all.sh`, `doctor.sh`, `skills.sh` | — |
+| `mcp/` | `ui.mcp.json` (Playwright, módulo `ui`), `jira.mcp.json` y `linear.mcp.json` (según `tracker`) y `refero.mcp.json` (opcional, plan Pro) | Se fusiona con `.mcp.json` sin pisar |
+| `scripts/` | `install.sh`, `sync-all.sh`, `doctor.sh`, `skills.sh`, `backlog.sh` (se copia a `.claude/stibios/`) | — |
 
 ## Requisitos
 
@@ -34,6 +34,7 @@ Cada proyecto tiene un `stibios.config.yml` en la raíz. `install.sh` lo crea co
 modulos: ui, seguridad, devops   # vacío = solo el núcleo
 tracker: none                    # none | jira | github | linear
 prefijo_ticket: TCK
+ticket_inicial: 1                # primer número a usar
 rama_principal: main
 formato_rama: "{ticket}/{descripcion}"
 firmas: prohibir                 # prohibir | permitir
@@ -47,6 +48,27 @@ quien_abre_pr: persona           # persona | agente
 | `devops` | Agente `devops` y su regla de CI |
 
 Tras editar la configuración, ejecuta `install.sh` otra vez: regenera `base.md` y copia los agentes de los módulos nuevos. Un proyecto sin interfaz: `install.sh . --modulos seguridad,devops`.
+
+## Tickets y backlog (Jira, GitHub, Linear)
+
+Los tickets se redactan primero en el repo, en `docs/backlog/<ID>.md`, con un formato independiente del tracker, y después se exportan si se quiere.
+
+| Comando | Qué hace |
+|---|---|
+| `/ticket <idea>` | Propone épica e historias, espera confirmación y crea los archivos con criterios dado / cuando / entonces |
+| `/exportar <ID… \| listos>` | Valida, **muestra una vista previa, espera aprobación** y crea los tickets en el tracker. Registra la clave y la URL en cada archivo |
+| `/spec`, `/tasks` | Parten del ticket del backlog; `/tasks` guarda su checklist en `docs/specs/<ID>-tareas.md` |
+
+Cada ticket es un Markdown con front-matter (`id`, `titulo`, `tipo`, `prioridad`, `estimacion`, `padre`, `dependencias`, `etiquetas`, `estado`, `externo`, `url`). Estados: `borrador` → `listo` → `exportado`.
+
+| `tracker` | Cómo se exporta | Necesita |
+|---|---|---|
+| `none` | Solo archivos Markdown (o CSV) | — |
+| `jira` | MCP de Atlassian, o CSV importable | `install.sh` añade el MCP a `.mcp.json`; la primera vez autoriza la conexión desde Claude Code (`/mcp`). `prefijo_ticket` = clave del proyecto Jira; si Jira ya tiene tickets, sube `ticket_inicial` para no chocar |
+| `github` | Issues con la CLI `gh` | `gh auth login` |
+| `linear` | MCP de Linear, o CSV | Igual que Jira |
+
+Mapeo con Jira: `epica`→Epic, `historia`→Story, `tarea`→Task, `bug`→Bug, `subtarea`→Sub-task; `alta/media/baja`→High/Medium/Low. Sin MCP: `bash .claude/stibios/backlog.sh csv jira > jira.csv` y se importa desde Jira (revisa el mapeo de columnas). `backlog.sh validar` comprueba formato, padres, dependencias y criterios; `doctor.sh` lo ejecuta. Nada se crea fuera del repo sin tu aprobación.
 
 ## Proyecto nuevo
 

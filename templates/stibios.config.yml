@@ -10,7 +10,8 @@ modulos: ui, seguridad, devops
 
 # Dónde viven los tickets: none | jira | github | linear
 tracker: none
-prefijo_ticket: TCK
+prefijo_ticket: TCK       # con Jira, la clave del proyecto Jira
+ticket_inicial: 1         # primer número a usar (sube si el tracker ya tiene tickets)
 
 # Ramas
 rama_principal: main

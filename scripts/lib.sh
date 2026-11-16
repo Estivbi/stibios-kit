@@ -33,6 +33,7 @@ cargar_config() { # <archivo>
   CFG_MODULOS="$(cfg_get "$f" modulos "ui,seguridad,devops" | tr -d ' ')"
   CFG_TRACKER="$(cfg_get "$f" tracker none)"
   CFG_PREFIJO="$(cfg_get "$f" prefijo_ticket TCK)"
+  CFG_TICKET_INICIAL="$(cfg_get "$f" ticket_inicial 1)"
   CFG_RAMA="$(cfg_get "$f" rama_principal main)"
   CFG_FORMATO_RAMA="$(cfg_get "$f" formato_rama "{ticket}/{descripcion}")"
   CFG_FIRMAS="$(cfg_get "$f" firmas prohibir)"
@@ -48,6 +49,7 @@ validar_config() {
   done
   case "$CFG_TRACKER" in none|jira|github|linear) ;; *) err "tracker: '$CFG_TRACKER' no válido (none | jira | github | linear)" ;; esac
   printf '%s' "$CFG_PREFIJO" | grep -qE '^[A-Za-z][A-Za-z0-9]*$' || err "prefijo_ticket: '$CFG_PREFIJO' no válido (letras y números, empieza por letra)"
+  printf '%s' "$CFG_TICKET_INICIAL" | grep -qE '^[1-9][0-9]*$' || err "ticket_inicial: '$CFG_TICKET_INICIAL' no válido (entero positivo)"
   printf '%s' "$CFG_RAMA" | grep -qE '^[A-Za-z0-9._/-]+$' || err "rama_principal: '$CFG_RAMA' no válida"
   case "$CFG_FORMATO_RAMA" in *"{ticket}"*"{descripcion}"*) ;; *) err "formato_rama: debe contener {ticket} y {descripcion}, en ese orden" ;; esac
   case "$CFG_FIRMAS" in prohibir|permitir) ;; *) err "firmas: '$CFG_FIRMAS' no válido (prohibir | permitir)" ;; esac
@@ -74,10 +76,10 @@ render() {
     *) bloque_firmas='Sin firmas ni atribuciones en commits, PRs ni archivos. El autor es la identidad Git configurada en el repo.' ;;
   esac
   case "$CFG_TRACKER" in
-    jira) bloque_tickets='Los tickets se gestionan en Jira con el prefijo `{{PREFIJO}}-<n>`.' ;;
-    github) bloque_tickets='Los tickets se gestionan en GitHub Issues; su identificador es `{{PREFIJO}}-<n>` (o el número de issue si el proyecto no usa prefijo).' ;;
-    linear) bloque_tickets='Los tickets se gestionan en Linear con el prefijo `{{PREFIJO}}-<n>`.' ;;
-    *) bloque_tickets='Los tickets se identifican como `{{PREFIJO}}-<n>` y viven en `docs/specs/` y `docs/tickets/`.' ;;
+    jira) bloque_tickets='Los tickets se gestionan en Jira con el prefijo `{{PREFIJO}}-<n>`. Se redactan antes en `docs/backlog/` (`/ticket`) y se exportan con `/exportar`.' ;;
+    github) bloque_tickets='Los tickets se gestionan en GitHub Issues con el identificador local `{{PREFIJO}}-<n>`. Se redactan antes en `docs/backlog/` (`/ticket`) y se exportan con `/exportar`.' ;;
+    linear) bloque_tickets='Los tickets se gestionan en Linear con el prefijo `{{PREFIJO}}-<n>`. Se redactan antes en `docs/backlog/` (`/ticket`) y se exportan con `/exportar`.' ;;
+    *) bloque_tickets='Los tickets se identifican como `{{PREFIJO}}-<n>` y se redactan en `docs/backlog/` (`/ticket`).' ;;
   esac
 
   t="${t//\{\{BLOQUE_PR\}\}/$bloque_pr}"

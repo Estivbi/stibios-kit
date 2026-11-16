@@ -82,6 +82,20 @@ for c in "$KIT_DIR"/commands/*.md; do
   [ -f "$DEST/.claude/commands/$(basename "$c")" ] || fallo "falta el comando /$(basename "$c" .md)"
 done
 
+# 6b. Herramientas del backlog y tickets
+for h in backlog.sh lib.sh; do
+  if [ ! -f "$DEST/.claude/stibios/$h" ]; then fallo "falta .claude/stibios/$h (ejecuta scripts/install.sh $DEST)"
+  elif ! cmp -s "$KIT_DIR/scripts/$h" "$DEST/.claude/stibios/$h"; then aviso ".claude/stibios/$h desactualizado (ejecuta scripts/install.sh $DEST)"
+  fi
+done
+if [ -d "$DEST/docs/backlog" ] && [ -f "$DEST/.claude/stibios/backlog.sh" ]; then
+  if SAL="$(cd "$DEST" && bash .claude/stibios/backlog.sh validar)"; then
+    ok "backlog válido ($(printf '%s' "$SAL" | tail -n1))"
+  else
+    while IFS= read -r l; do case "$l" in ✗*) fallo "backlog → ${l#✗ }" ;; esac; done <<< "$SAL"
+  fi
+fi
+
 # 7. MCP
 if [ -f "$DEST/.mcp.json" ]; then
   if command -v jq >/dev/null 2>&1; then
@@ -102,6 +116,13 @@ if [ -f "$DEST/.mcp.json" ]; then
 elif modulo_activo ui; then
   aviso "falta .mcp.json (módulo ui)"
 fi
+case "$CFG_TRACKER" in
+  jira|linear)
+    srv="$(jq -r '.mcpServers | keys[0]' "$KIT_DIR/mcp/$CFG_TRACKER.mcp.json" 2>/dev/null || echo "$CFG_TRACKER")"
+    if ! { [ -f "$DEST/.mcp.json" ] && grep -q "\"$srv\"" "$DEST/.mcp.json"; }; then
+      aviso "tracker $CFG_TRACKER sin MCP '$srv' en .mcp.json (ejecuta scripts/install.sh $DEST)"
+    fi ;;
+esac
 
 # 8. Versión del kit
 if [ -f "$DEST/.claude/stibios/.kit-version" ] && git -C "$KIT_DIR" rev-parse --short HEAD >/dev/null 2>&1; then
