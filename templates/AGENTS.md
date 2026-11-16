@@ -2,7 +2,7 @@
 
 Fuente de verdad para los agentes y las personas que trabajan en este repositorio.
 
-**Reglas comunes (flujo SDD/TDD, ramas, commits, diseño, seguridad):** `.claude/stibios/base.md`. Léelas antes de empezar. Si algo de este archivo choca con la base, manda este archivo.
+**Reglas comunes (flujo SDD/TDD, ramas, commits, seguridad y, según módulos, diseño):** `.claude/stibios/base.md`, generado desde `stibios.config.yml`. Léelas antes de empezar. Si algo de este archivo choca con la base, manda este archivo.
 
 ## Qué es {{PROYECTO}}
 
@@ -31,7 +31,7 @@ Los subagentes viven en `.claude/agents/<nombre>.md`.
 | documentacion | Docs de ticket y estado | `docs/tickets/`, `docs/estado.md`, `README.md` | Solo documentación |
 | pr-reviewer | Revisión de la rama contra su spec | — | No (solo informa) |
 
-Quita las filas que el proyecto no use.
+Quita las filas que el proyecto no use. Los agentes `frontend`, `seguridad` y `devops` solo existen si su módulo está activo en `stibios.config.yml`.
 
 ## Estructura del repositorio
 

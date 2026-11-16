@@ -1,0 +1,21 @@
+# stibios.config.yml — configuración del kit para {{PROYECTO}}
+# Formato plano `clave: valor`. Tras cambiarlo, ejecuta scripts/install.sh del kit
+# (o sync-all.sh) para regenerar .claude/stibios/base.md y los agentes.
+
+# Módulos opcionales, separados por comas. Vacío = solo el núcleo.
+#   ui         agente frontend, DESIGN.md, reglas de diseño, tests de interfaz y MCP de Playwright
+#   seguridad  agente seguridad y su regla de revisión
+#   devops     agente devops y su regla de CI
+modulos: ui, seguridad, devops
+
+# Dónde viven los tickets: none | jira | github | linear
+tracker: none
+prefijo_ticket: TCK
+
+# Ramas
+rama_principal: main
+formato_rama: "{ticket}/{descripcion}"
+
+# Commits y PRs
+firmas: prohibir          # prohibir | permitir firmas/atribuciones de herramienta
+quien_abre_pr: persona    # persona | agente
