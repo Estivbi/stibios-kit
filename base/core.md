@@ -1,6 +1,6 @@
 # Base Stibios — Forma de trabajar común a todos los proyectos
 
-Este archivo lo copia `stibios-kit` a `.claude/stibios/base.md` de cada proyecto. No lo edites dentro del proyecto: los cambios se hacen en el repo `stibios-kit` y se propagan con `scripts/sync-all.sh`. Lo específico del proyecto (stack, estructura, tickets) va en `AGENTS.md`. Si algo del `AGENTS.md` del proyecto choca con este archivo, manda el del proyecto.
+Este archivo lo **genera** `stibios-kit` en `.claude/stibios/base.md` a partir de `stibios.config.yml`. No lo edites dentro del proyecto: cambia la configuración y ejecuta `scripts/install.sh`, o cambia el kit y propágalo con `scripts/sync-all.sh`. Lo específico del proyecto (stack, estructura, tickets) va en `AGENTS.md`. Si algo del `AGENTS.md` del proyecto choca con este archivo, manda el del proyecto.
 
 ## Flujo SDD y TDD
 
@@ -15,21 +15,6 @@ Todo ticket sigue: spec → test en rojo → código en verde → refactor → d
 
 Un ticket está hecho cuando: cada criterio de la spec tiene test y pasa, el linter y los tipos están limpios, la documentación está al día y los revisores no tienen bloqueos. Nunca se salta, desactiva ni pone en cuarentena un test para conseguir el verde.
 
-## Tests de interfaz (front)
-
-- Los criterios con comportamiento visible se cubren con Playwright (E2E) además de los tests unitarios.
-- Antes de dar por hecha una pantalla: capturas en móvil, tablet y escritorio, y comprobación de accesibilidad básica (contraste, foco, etiquetas).
-- Los tests E2E salen de los criterios de la spec, no de lo que pinta la pantalla.
-
-## Diseño y UI
-
-- Cada proyecto con interfaz tiene un `DESIGN.md` en la raíz: fuente de verdad de colores, tipografía, espaciado, movimiento y componentes, más su **intensidad de estilo**.
-- Antes de tocar UI, el agente `frontend` lee `DESIGN.md`. Si el proyecto no tiene uno, se crea antes de escribir interfaz (a partir de una referencia de Refero Styles o del skill `refero-design`).
-- Prohibidos los valores de color, tamaño o espaciado escritos a mano fuera de los tokens definidos en `DESIGN.md`.
-- Skills de diseño recomendados: `frontend-design` (base), `ui-ux-pro-max` (paletas y estilos), `web-design-guidelines` (corrección y accesibilidad), `refero-design` (investigar referencias antes de diseñar). Se instalan con `scripts/skills.sh`.
-- No mezclar referencias de diseño: se elige una dirección principal y las demás solo aportan detalles concretos.
-- Criterio de hecho visual: la pantalla respeta los tokens, funciona en móvil y tablet, y pasa la revisión de accesibilidad.
-
 ## Trabajo en paralelo
 
 - Cada agente toca solo las carpetas de las que es dueño; si necesita un cambio en otra, lo pide al agente dueño.
@@ -38,11 +23,12 @@ Un ticket está hecho cuando: cada criterio de la spec tiene test y pasa, el lin
 
 ## Ramas, commits y PRs
 
-- Una rama por ticket, desde `main`, con nombre en español que explique lo que hace: `tck-123/configurar-subagentes` (el prefijo es el del tracker del proyecto).
-- `main` es la rama por defecto y está protegida. Las ramas van contra `main`.
-- Las PRs las crea y las mergea la persona responsable del proyecto. Al terminar un ticket, el agente deja la URL de comparación de GitHub, el título y la descripción para pegar. No se empieza el siguiente ticket hasta que el anterior está mergeado.
+- {{BLOQUE_TICKETS}}
+- Una rama por ticket, desde `{{RAMA_PRINCIPAL}}`, con nombre en español que explique lo que hace. Formato: `{{FORMATO_RAMA}}`, por ejemplo `{{EJEMPLO_RAMA}}`.
+- `{{RAMA_PRINCIPAL}}` es la rama por defecto y está protegida. Las ramas van contra `{{RAMA_PRINCIPAL}}`.
+- {{BLOQUE_PR}}
 - Conventional Commits con descripción en español, en infinitivo: `tipo(<TICKET>): descripción` con `feat`, `fix`, `test`, `docs`, `refactor`, `chore`, `ci`, `build`.
-- Sin firmas ni atribuciones en commits, PRs ni archivos. El autor es la identidad Git configurada en el repo.
+- {{BLOQUE_FIRMAS}}
 - Nunca se reescribe el historial de una rama compartida (sin rebase, amend ni push --force).
 
 ## Calidad común
@@ -60,6 +46,6 @@ Tipado estricto, linter y formateador del stack, sin código muerto, funciones p
 ## Seguridad y secretos
 
 - Ningún secreto en git. Solo `.env.example` con nombres de variables y valores ficticios.
-- Todo acceso a datos requiere autenticación.
+- Todo acceso a datos requiere autenticación, salvo lo que `AGENTS.md` marque expresamente como público.
 - Las acciones externas irreversibles (enviar un email, publicar, cobrar) pasan por aprobación manual.
 - Sin servicios de pago innecesarios: toda infraestructura se evalúa primero contra planes gratuitos o ya contratados.

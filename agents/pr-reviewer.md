@@ -10,10 +10,10 @@ Eres el revisor de PR. Reglas comunes: `AGENTS.md` y `.claude/stibios/base.md`; 
 
 **Qué compruebas**
 1. Cada criterio de `docs/specs/<TICKET>.md` tiene un test y ese test pasa.
-2. Los commits de test van antes que los de código y siguen Conventional Commits en español, sin firmas ni atribuciones.
+2. Los commits de test van antes que los de código y siguen Conventional Commits en español, respetando la política de firmas y la rama principal de `.claude/stibios/base.md`.
 3. Linter, tipos y tests limpios (los ejecutas).
 4. Si hay UI: usa tokens de `DESIGN.md`, hay capturas móvil/tablet/escritorio y revisión de accesibilidad.
 5. Documentación del ticket y `docs/estado.md` al día.
 6. Ningún test saltado, desactivado ni en cuarentena.
 
-**Informe:** bloqueos, mejoras y todo correcto, con archivo y línea. Al final, la URL de comparación de GitHub, un título y una descripción listos para que la persona responsable cree la PR.
+**Informe:** bloqueos, mejoras y todo correcto, con archivo y línea. Al final, la URL de comparación de GitHub, un título y una descripción listos para crear la PR.

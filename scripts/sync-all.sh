@@ -15,6 +15,7 @@ while IFS= read -r proyecto || [ -n "$proyecto" ]; do
   if [ -d "$proyecto" ]; then
     echo "→ $proyecto"
     "$KIT_DIR/scripts/install.sh" "$proyecto" >/dev/null
+    "$KIT_DIR/scripts/doctor.sh" "$proyecto" | grep -E '^(⚠|✗)' | sed 's/^/    /' || true
     if git -C "$proyecto" rev-parse --git-dir >/dev/null 2>&1; then
       git -C "$proyecto" status --short .claude CLAUDE.md .mcp.json | sed 's/^/    /'
     fi
