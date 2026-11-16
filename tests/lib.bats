@@ -15,7 +15,7 @@ setup() { source "$KIT/scripts/lib.sh"; CFG="$BATS_TEST_TMPDIR/c.yml"; }
   [ "$(cfg_get "$CFG" raro x)" = "x y" ]
 }
 
-@test "cfg_get respeta un valor vacío (no usa el defecto)" {
+@test "cfg_get respeta un valor en blanco (no usa el defecto)" {
   printf 'modulos:    # ninguno\n' > "$CFG"
   [ "$(cfg_get "$CFG" modulos ui)" = "" ]
 }
