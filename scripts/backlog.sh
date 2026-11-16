@@ -58,7 +58,8 @@ lista() { # <archivo> <clave> → un elemento por línea
 
 cuerpo_de() { # texto tras el front-matter (o el archivo entero si no lo tiene)
   if head -n1 "$1" | grep -q '^---[[:space:]]*$'; then
-    awk 'n < 2 && /^---[[:space:]]*$/ {n++; next} n >= 2 {print}' "$1" | sed '1{/^$/d}'
+    # quita el front-matter y la línea en blanco que lo sigue (awk: el sed de BSD no admite `1{/^$/d}`)
+    awk 'n < 2 && /^---[[:space:]]*$/ {n++; next} n >= 2 && !c++ && /^$/ {next} n >= 2 {print}' "$1"
   else
     cat "$1"
   fi
