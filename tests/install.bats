@@ -17,7 +17,7 @@ setup() { setup_proyecto; }
   grep -qxF "$PROY" "$STIBIOS_REGISTRO"
 }
 
-@test "--modulos vacío instala solo el núcleo" {
+@test "--modulos sin valor instala solo el nucleo" {
   run instalar --modulos ""
   [ "$status" -eq 0 ]
   [ "$(ls "$PROY/.claude/agents" | tr '\n' ' ')" = "arquitecto.md backend.md documentacion.md pr-reviewer.md " ]

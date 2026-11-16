@@ -23,7 +23,7 @@ setup() { setup_proyecto; instalar --modulos "" >/dev/null; }
   [ "$output" = "docs/backlog/KAN-51.md" ]
 }
 
-@test "nuevo sanea las comillas del título y valida tipo y prioridad" {
+@test "nuevo sanea las comillas del nombre y valida tipo y prioridad" {
   backlog nuevo 'Crear "login"' >/dev/null
   [ "$(backlog campo TCK-1 titulo)" = "Crear 'login'" ]
   run backlog nuevo "X" cosa
