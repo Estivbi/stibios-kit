@@ -9,7 +9,7 @@ Eres el agente de frontend. Reglas comunes: `AGENTS.md` y `.claude/stibios/base.
 **Eres dueño de** la carpeta de frontend indicada en `AGENTS.md`.
 
 **Antes de escribir interfaz**
-1. Lee `DESIGN.md`. Si no existe, para y pide al `arquitecto` o a Carol que se cree antes (a partir de una referencia de Refero Styles o del skill `refero-design`).
+1. Lee `DESIGN.md`. Si no existe, para y pide al `arquitecto` o a la persona responsable que se cree antes (a partir de una referencia de Refero Styles o del skill `refero-design`).
 2. Usa los skills de diseño instalados (`frontend-design`, `ui-ux-pro-max`, `web-design-guidelines`) como apoyo, nunca por encima de `DESIGN.md`.
 
 **Cómo trabajas**

@@ -1,6 +1,6 @@
 # stibios-kit
 
-Base común para todos los proyectos de Stibios: flujo SDD/TDD, agentes, comandos, MCP y skills de diseño. Se instala en proyectos nuevos y se sincroniza en los existentes.
+Base común para tus proyectos con Claude Code: flujo SDD/TDD, agentes, comandos, MCP y skills de diseño. Se instala en proyectos nuevos y se sincroniza en los existentes.
 
 ## Contenido
 
@@ -13,19 +13,32 @@ Base común para todos los proyectos de Stibios: flujo SDD/TDD, agentes, comando
 | `mcp/` | `base.mcp.json` (Playwright) y `refero.mcp.json` (opcional, plan Pro) | Se fusiona con `.mcp.json` sin pisar |
 | `scripts/` | `install.sh`, `sync-all.sh`, `skills.sh` | — |
 
+## Requisitos
+
+- Bash (en Windows, usa WSL), `git` y `jq` (para fusionar `.mcp.json`).
+- Node.js (`npx`) para el MCP de Playwright y para `skills.sh`.
+- [Claude Code](https://claude.com/claude-code). `AGENTS.md` es un formato que leen también otras herramientas, pero `agents/` y `commands/` son específicos de Claude Code.
+
+## Instalación del kit
+
+```bash
+git clone https://github.com/estivbi/stibios-kit.git
+export STIBIOS_KIT="$PWD/stibios-kit"   # añádelo a tu shell para reutilizarlo
+```
+
 ## Proyecto nuevo
 
 ```bash
 mkdir mi-proyecto && cd mi-proyecto && git init
-~/stibios/stibios-kit/scripts/install.sh .
-~/stibios/stibios-kit/scripts/skills.sh      # skills de diseño de skills.sh
+"$STIBIOS_KIT/scripts/install.sh" .
+"$STIBIOS_KIT/scripts/skills.sh"      # skills de diseño de skills.sh
 # rellena AGENTS.md (stack, estructura) y DESIGN.md (tokens)
 ```
 
 ## Proyecto que ya existe
 
 ```bash
-~/stibios/stibios-kit/scripts/install.sh ~/proyectos/mi-proyecto
+"$STIBIOS_KIT/scripts/install.sh" ~/proyectos/mi-proyecto
 ```
 
 No pisa `AGENTS.md`, `CLAUDE.md` ni `DESIGN.md`. Añade los imports que falten a tu `CLAUDE.md` y fusiona `.mcp.json`. Revisa el diff y commitea como `chore(kit): incorporar base de Stibios`.
@@ -49,3 +62,8 @@ No pisa `AGENTS.md`, `CLAUDE.md` ni `DESIGN.md`. Añade los imports que falten a
 - Lo específico de un proyecto vive en su `AGENTS.md`, nunca en el kit.
 - Sin secretos en este repo.
 - Los agentes del kit son genéricos; si un proyecto necesita uno distinto, se edita en el proyecto y `install.sh` ya no lo pisa (salvo `--force-agents`).
+- Las dependencias externas (MCP, skills) se fijan a una versión concreta cuando es posible.
+
+## Licencia
+
+[MIT](LICENSE).
