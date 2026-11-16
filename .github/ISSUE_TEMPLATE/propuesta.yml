@@ -1,0 +1,21 @@
+name: Propuesta
+description: Una mejora, un módulo nuevo o un cambio en la forma de trabajar
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problema
+    attributes:
+      label: Qué problema resuelve
+    validations:
+      required: true
+  - type: textarea
+    id: propuesta
+    attributes:
+      label: Propuesta
+      description: Qué cambiarías y, si afecta a la configuración, qué clave nueva haría falta.
+    validations:
+      required: true
+  - type: textarea
+    id: alternativas
+    attributes:
+      label: Alternativas consideradas

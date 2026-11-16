@@ -58,7 +58,8 @@ lista() { # <archivo> <clave> → un elemento por línea
 
 cuerpo_de() { # texto tras el front-matter (o el archivo entero si no lo tiene)
   if head -n1 "$1" | grep -q '^---[[:space:]]*$'; then
-    awk 'n < 2 && /^---[[:space:]]*$/ {n++; next} n >= 2 {print}' "$1" | sed '1{/^$/d}'
+    # quita el front-matter y la línea en blanco que lo sigue (awk: el sed de BSD no admite `1{/^$/d}`)
+    awk 'n < 2 && /^---[[:space:]]*$/ {n++; next} n >= 2 && !c++ && /^$/ {next} n >= 2 {print}' "$1"
   else
     cat "$1"
   fi
@@ -88,11 +89,12 @@ cmd_listar() {
 }
 
 cmd_nuevo() {
-  local titulo="${1:-}" tipo="${2:-historia}" prior="${3:-media}" id ruta t
+  local titulo="${1:-}" tipo="${2:-historia}" prior="${3:-media}" id ruta t comilla
   [ -n "$titulo" ] || die "uso: nuevo <título> [tipo] [prioridad]"
   en_lista "$tipo" "$TIPOS" || die "tipo no válido: $tipo ($TIPOS)"
   en_lista "$prior" "$PRIORIDADES" || die "prioridad no válida: $prior ($PRIORIDADES)"
-  titulo="${titulo//\"/\'}"
+  comilla="'"   # en bash 3.2, ${var//x/\'} conserva la barra; con una variable es portable
+  titulo="${titulo//\"/$comilla}"
   id="$(siguiente_id)"
   mkdir -p "$BACKLOG"
   ruta="$BACKLOG/$id.md"
@@ -154,7 +156,9 @@ cmd_campo() { local f; f="$(archivo_de "${1:-}")"; valor "$f" "${2:?uso: campo <
 cmd_cuerpo() { local f; f="$(archivo_de "${1:-}")"; cuerpo_de "$f"; }
 
 csv_celda() { # escapa según RFC 4180
-  local s="$1"; s="${s//\"/\"\"}"; printf '"%s"' "$s"
+  local s="$1" dq='"'
+  s="${s//$dq/$dq$dq}"
+  printf '"%s"' "$s"
 }
 
 orden_tipos() { echo "epica historia tarea bug subtarea"; }

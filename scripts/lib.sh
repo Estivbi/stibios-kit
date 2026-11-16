@@ -6,6 +6,7 @@
 shopt -u patsub_replacement 2>/dev/null || true
 
 MODULOS_VALIDOS="ui seguridad devops"
+# shellcheck disable=SC2034  # lo usan install.sh y doctor.sh
 AGENTES_NUCLEO="arquitecto backend documentacion pr-reviewer"
 
 agentes_de_modulo() {
@@ -60,6 +61,8 @@ validar_config() {
 modulo_activo() { case ",$CFG_MODULOS," in *",$1,"*) return 0 ;; esac; return 1; }
 
 # render: sustituye las variables conocidas (stdin → stdout). Las demás {{...}} se dejan.
+# Los textos llevan comillas inversas de Markdown a propósito (no se expanden).
+# shellcheck disable=SC2016
 render() {
   local t ticket_ej ejemplo bloque_pr bloque_firmas bloque_tickets
   t="$(cat)"
@@ -91,6 +94,18 @@ render() {
   t="${t//\{\{PREFIJO\}\}/$CFG_PREFIJO}"
   t="${t//\{\{PROYECTO\}\}/${PROYECTO:-proyecto}}"
   printf '%s\n' "$t"
+}
+
+# version_kit <kit>: tag semver si lo hay (v0.1.0, v0.1.0-3-gabc123), si no el hash, si no el archivo VERSION.
+version_kit() {
+  local kit="$1" v
+  if v="$(git -C "$kit" describe --tags --always 2>/dev/null)" && [ -n "$v" ]; then
+    printf '%s' "$v"
+  elif [ -f "$kit/VERSION" ]; then
+    printf 'v%s' "$(tr -d '[:space:]' < "$kit/VERSION")"
+  else
+    printf 'sin-version'
+  fi
 }
 
 # componer_base <kit>: núcleo + módulos activos (stdout).

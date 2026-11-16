@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: shellcheck
+        run: shellcheck -x -P SCRIPTDIR scripts/*.sh
+
+  tests:
+    name: tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar bats
+        run: sudo npm install -g bats@1.13.0
+      - name: Herramientas
+        run: |
+          bash --version | head -n1
+          jq --version
+          bats --version
+      - name: Tests
+        run: bats --print-output-on-failure tests
+
+  bash-3-2:
+    name: tests (bash 3.2 de macOS)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar bats
+        run: sudo npm install -g bats@1.13.0
+      - name: Tests forzando /bin/bash (3.2)
+        run: |
+          /bin/bash --version | head -n1
+          mkdir -p "$RUNNER_TEMP/shim" && ln -sf /bin/bash "$RUNNER_TEMP/shim/bash"
+          PATH="$RUNNER_TEMP/shim:$PATH" bats --print-output-on-failure tests

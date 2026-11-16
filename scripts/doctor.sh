@@ -125,9 +125,9 @@ case "$CFG_TRACKER" in
 esac
 
 # 8. Versión del kit
-if [ -f "$DEST/.claude/stibios/.kit-version" ] && git -C "$KIT_DIR" rev-parse --short HEAD >/dev/null 2>&1; then
+if [ -f "$DEST/.claude/stibios/.kit-version" ]; then
   inst="$(cat "$DEST/.claude/stibios/.kit-version")"
-  act="$(git -C "$KIT_DIR" rev-parse --short HEAD)"
+  act="$(version_kit "$KIT_DIR")"
   if [ "$inst" = "$act" ]; then ok "kit en la versión $act"; else aviso "el proyecto tiene el kit $inst y el kit actual es $act"; fi
 fi
 
